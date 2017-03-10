@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/p2p.Entities.User" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/p2p.Entities.User" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="UserRegisterDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UserRegisterDTO" nillable="true" type="tns:UserRegisterDTO" />
+  <xs:complexType name="UserInfoDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Enabled" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Id" type="xs:long" />
+      <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UserInfoDTO" nillable="true" type="tns:UserInfoDTO" />
+  <xs:complexType name="UsersListDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="SearchResult" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Users" nillable="true" type="tns:ArrayOfUserInfoDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UsersListDTO" nillable="true" type="tns:UsersListDTO" />
+  <xs:complexType name="ArrayOfUserInfoDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UserInfoDTO" nillable="true" type="tns:UserInfoDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUserInfoDTO" nillable="true" type="tns:ArrayOfUserInfoDTO" />
+</xs:schema>
