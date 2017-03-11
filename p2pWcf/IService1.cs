@@ -1,4 +1,4 @@
-﻿
+﻿using p2p.Entities.Info;
 using p2p.Entities.File;
 using p2p.Entities.User;
 using System;
@@ -22,6 +22,9 @@ namespace p2pWcf
         string registerUser(UserRegisterDTO urd);
 
         [OperationContract]
+        string signoutUser(string xmlContent);
+
+        [OperationContract]
         string enableDisableUser(UserInfoDTO uid);
 
         [OperationContract]
@@ -37,7 +40,15 @@ namespace p2pWcf
         FileSearchResultDTO searchFiles(string xmlContent);
 
         [OperationContract]
+        FilesListDTO getFilesList();
+
+        [OperationContract]
         FileResponseDTO downloadRequest(FileRequestDTO request);
+
+        [OperationContract]
+        StatisticsDTO getStatistics();
+
+
     }
 
     // Use a data contract as illustrated in the sample below to add composite types to service operations.

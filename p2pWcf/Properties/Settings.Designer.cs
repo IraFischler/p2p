@@ -37,7 +37,7 @@ namespace p2pWcf.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
         [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\o.balbarer\\Documents" +
-            "\\p2pDB.mdf;Integrated Security=True;Connect Timeout=30")]
+            "\\p2pDB.mdf;Integrated Security=True;Connect Timeout=180")]
         public string p2pDBConnectionString1 {
             get {
                 return ((string)(this["p2pDBConnectionString1"]));

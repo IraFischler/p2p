@@ -12,6 +12,9 @@ namespace p2p.Entities.File
     public class FileInfoDTO
     {
         [DataMember]
+        public long Id { get; set; }
+
+        [DataMember]
         public string FileName { get; set; }
         //txt, movie, pdf, jpg etc...
         [DataMember]

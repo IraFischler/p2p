@@ -80,8 +80,7 @@ namespace p2pWpf
 
             // Receive
             textBox.Text = "Receiving...";
-           
-           
+                     
             int read;
             int totalRead = 0;
             byte[] buffer = new byte[32 * 1024]; // 32k chunks

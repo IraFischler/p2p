@@ -33,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -59,6 +60,8 @@
     <Compile Include="Entities\File\FileRequestDTO .cs" />
     <Compile Include="Entities\File\FileSearchDTO.cs" />
     <Compile Include="Entities\File\FileSearchResultDTO.cs" />
+    <Compile Include="Entities\File\FilesListDTO.cs" />
+    <Compile Include="Entities\Info\StatisticsDTO.cs" />
     <Compile Include="Entities\User\UserInfoDTO.cs" />
     <Compile Include="Entities\User\UserLoginDTO.cs" />
     <Compile Include="Entities\User\UserRegisterDTO.cs" />

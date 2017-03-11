@@ -10,7 +10,7 @@
 namespace p2pWeb {
     
     
-    public partial class Registration {
+    public partial class Statistics {
         
         /// <summary>
         /// form1 control.
@@ -22,48 +22,75 @@ namespace p2pWeb {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// userNameTb control.
+        /// activeUsersLb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox userNameTb;
+        protected global::System.Web.UI.WebControls.Label activeUsersLb;
         
         /// <summary>
-        /// passwordTb control.
+        /// numberOfActiveUsersLb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputPassword passwordTb;
+        protected global::System.Web.UI.WebControls.Label numberOfActiveUsersLb;
         
         /// <summary>
-        /// emailTb control.
+        /// allUsersLb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox emailTb;
+        protected global::System.Web.UI.WebControls.Label allUsersLb;
         
         /// <summary>
-        /// validationLb control.
+        /// numberOfAllUserLb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label validationLb;
+        protected global::System.Web.UI.WebControls.Label numberOfAllUserLb;
         
         /// <summary>
-        /// registerBtn control.
+        /// allFilesLb control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button registerBtn;
+        protected global::System.Web.UI.WebControls.Label allFilesLb;
+        
+        /// <summary>
+        /// numberOfFilesLb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label numberOfFilesLb;
+        
+        /// <summary>
+        /// searchBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button searchBtn;
+        
+        /// <summary>
+        /// filesLb control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListBox filesLb;
     }
 }

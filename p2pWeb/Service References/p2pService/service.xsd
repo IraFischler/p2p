@@ -2,6 +2,7 @@
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import namespace="http://schemas.datacontract.org/2004/07/p2p.Entities.User" />
   <xs:import namespace="http://schemas.datacontract.org/2004/07/p2p.Entities.File" />
+  <xs:import namespace="http://schemas.datacontract.org/2004/07/p2p.Entities.Info" />
   <xs:element name="loginUser">
     <xs:complexType>
       <xs:sequence>
@@ -27,6 +28,20 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="registerUserResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="signoutUser">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="xmlContent" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="signoutUserResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="signoutUserResult" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -98,17 +113,41 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="getFilesList">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getFilesListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/p2p.Entities.File" minOccurs="0" name="getFilesListResult" nillable="true" type="q7:FilesListDTO" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="downloadRequest">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/p2p.Entities.File" minOccurs="0" name="request" nillable="true" type="q7:FileRequestDTO" />
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/p2p.Entities.File" minOccurs="0" name="request" nillable="true" type="q8:FileRequestDTO" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="downloadRequestResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/p2p.Entities.File" minOccurs="0" name="downloadRequestResult" nillable="true" type="q8:FileResponseDTO" />
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/p2p.Entities.File" minOccurs="0" name="downloadRequestResult" nillable="true" type="q9:FileResponseDTO" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getStatistics">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getStatisticsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/p2p.Entities.Info" minOccurs="0" name="getStatisticsResult" nillable="true" type="q10:StatisticsDTO" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

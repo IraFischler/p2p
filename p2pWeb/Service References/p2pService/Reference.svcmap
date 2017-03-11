@@ -27,6 +27,7 @@
     <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="370fa584-635f-40e1-988a-8b6f41dd1d22" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/p2pWcf/Service1/mex" />
     <MetadataFile FileName="p2p.Entities.User.xsd" MetadataType="Schema" ID="d2f9205d-8ddd-4fec-adf1-a0c32d32b4d0" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/p2pWcf/Service1/mex" />
     <MetadataFile FileName="p2p.Entities.File.xsd" MetadataType="Schema" ID="ae391dfe-9a63-4f06-a282-08f39a246cd1" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/p2pWcf/Service1/mex" />
+    <MetadataFile FileName="p2p.Entities.Info.xsd" MetadataType="Schema" ID="6f724eda-dbb3-4f4c-bd41-fa3024b287c0" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/p2pWcf/Service1/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

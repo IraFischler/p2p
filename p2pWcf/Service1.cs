@@ -1,6 +1,7 @@
 ﻿using p2p.Entities;
 using p2p.Entities.File;
 using p2p.Entities.User;
+using p2p.Entities.Info;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,13 @@ namespace p2pWcf
             Type _type =  typeof(UserLoginDTO);
             UserLoginDTO user = (UserLoginDTO)(p2p.Utils.XmlFormatter.GetObjectFromXML(xmlContent, _type));
             return DAL.p2pSqlDAL.loginUser(user);
+        }
+
+        public string signoutUser(string xmlContent)
+        {
+            Type _type = typeof(UserLoginDTO);
+            UserLoginDTO user = (UserLoginDTO)(p2p.Utils.XmlFormatter.GetObjectFromXML(xmlContent, _type));
+            return DAL.p2pSqlDAL.signoutUser(user);
         }
 
         public string registerUser(UserRegisterDTO urd)
@@ -68,6 +76,16 @@ namespace p2pWcf
             Type _type = typeof(UserRegisterDTO);
             UserRegisterDTO user = (UserRegisterDTO)(p2p.Utils.XmlFormatter.GetObjectFromXML(xmlContent, _type));
             return DAL.p2pSqlDAL.registerUser(user);
+        }
+
+        public StatisticsDTO getStatistics()
+        {
+            return DAL.p2pSqlDAL.getStatistics();
+        }
+
+        public FilesListDTO getFilesList()
+        {
+           return DAL.p2pSqlDAL.getFilesList();
         }
     }
 }

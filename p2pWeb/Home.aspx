@@ -8,12 +8,15 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <div>
-    <a href="Registration.aspx">Register</a>
-    </div>
-    <div>
-    <a href="ManageUsers.aspx">Manage</a>
-    </div>
+        <div>
+            <a href="Registration.aspx">Register</a>
+        </div>
+        <div>
+            <a href="ManageUsers.aspx">Manage</a>
+        </div>
+        <div>
+            <a href="Statistics.aspx">Manage</a>
+        </div>
     </form>
 </body>
 </html>

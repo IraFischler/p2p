@@ -1,4 +1,5 @@
 ﻿using p2p.Entities.File;
+using p2p.Utils;
 using p2pWpf.p2pService;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ namespace p2pWpf
         public string UserName { get; set; }
         public string Password { get; set; }
         public MainWindow Parent { get; set; }
+        
         public DownloadWindow()
         {
             InitializeComponent();
@@ -40,22 +42,27 @@ namespace p2pWpf
                 return;
             }
 
-
             var fr = (FileInfoDTO)resultsListBox.SelectedItem;
             FileRequestDTO request = new FileRequestDTO()
             {
                 FileName = fr.FileName,
                 FileType = fr.FileType,
+                //FileSize = fr.FileSize,
                 UserName = UserName,
                 Password = Password,
                 //Id = f.Id
-
             };
 
             using (Service1Client client = new Service1Client())
             {
+                var res = client.downloadRequest(request);
 
-                var result1 = client.downloadRequest(request);
+                //DownloadFile df = new DownloadFile()
+                //{
+                //    Ip = res.Ip,
+                //    Port = res.Port,
+                //    //Request = request
+                //};
             }
         }
 
@@ -89,8 +96,6 @@ namespace p2pWpf
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Parent.Show();
-        }
-
-       
+        }       
     }
 }

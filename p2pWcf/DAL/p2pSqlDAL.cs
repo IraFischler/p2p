@@ -7,40 +7,50 @@ using p2p.Entities;
 using p2p.Entities.User;
 using p2p.Entities.Admin;
 using p2p.Entities.File;
+using p2p.Entities.Info;
 using System.Windows;
 
 namespace p2pWcf.DAL
 {
     public class p2pSqlDAL
     {
-        static void addLog(string method, string message, string additionalData)
+
+        #region USER
+
+        public static string signoutUser(UserLoginDTO uld)
         {
             try
             {
                 using (p2pDataContext ctx = new p2pDataContext())
                 {
-                    //annonimos constarctor
-                    Log l = new p2pWcf.Log()
+                    var res = from u in ctx.Users
+                              where u.userName == uld.UserName &&
+                              u.password == uld.UserName
+                              select u;
+
+                    if (res.Count() == 1)
                     {
-                        method = method,
-                        message = message,
-                        additionalData = additionalData,
-                        updateDate = DateTime.Now
-                    };
+                        var us = res.SingleOrDefault();
+                        var res2 = (from f in ctx.Files
+                                    where f.userId == uld.Id
+                                    select f).ToList().SingleOrDefault();
 
-                    //insert into table
-                    ctx.Logs.InsertOnSubmit(l);
-                    ctx.SubmitChanges();
+                        us.enabled = false;
+                        ctx.Files.DeleteOnSubmit(res2);
+
+                        ctx.SubmitChanges();
+                        return "OK";
+                    }
                 }
-
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
+                // get method name using reflection
+                addLog(System.Reflection.MethodBase.GetCurrentMethod().Name, e.Message, "");
             }
-        }
 
-        #region USER
+            return "ERROR";
+        }
 
         public static string enableDisableUser(UserInfoDTO uid)
         {
@@ -77,7 +87,7 @@ namespace p2pWcf.DAL
                 // get method name using reflection
                 addLog(System.Reflection.MethodBase.GetCurrentMethod().Name, e.Message, "");
             }
-            return "failed";
+            return "ERROR";
         }
 
         public static string updateUser(UserInfoDTO uid)
@@ -97,11 +107,10 @@ namespace p2pWcf.DAL
                         u.userName = uid.UserName;
                         u.password = uid.Password;
                         u.email = uid.Email;
+
+                        ctx.SubmitChanges();
+                        return "OK";
                     }
-
-                    ctx.SubmitChanges();
-                    return "OK";
-
                 }
             }
             catch (Exception e)
@@ -131,10 +140,10 @@ namespace p2pWcf.DAL
 
                         ctx.Files.DeleteOnSubmit(res2);
                         ctx.Users.DeleteOnSubmit(us);
-                    }
 
-                    ctx.SubmitChanges();
-                    return "OK";
+                        ctx.SubmitChanges();
+                        return "OK";
+                    }
                 }
             }
             catch (Exception e)
@@ -145,7 +154,7 @@ namespace p2pWcf.DAL
 
             return "ERROR";
         }
-     
+
         //Login any type of user: admin, user ...
         public static string loginUser(UserLoginDTO uld)
         {
@@ -217,8 +226,8 @@ namespace p2pWcf.DAL
                                    UserName = u.userName,
                                    Password = u.password,
                                    Email = u.email
-
                                });
+
                     if (res.Count() > 0)
                     {
                         return new UsersListDTO()
@@ -359,14 +368,114 @@ namespace p2pWcf.DAL
             return new FileResponseDTO();
 
         }
-        
+
+        public static FilesListDTO getFilesList()
+        {
+            try
+            {
+                using (p2pDataContext ctx = new p2pDataContext())
+                {
+                    var res = (from f in ctx.Files
+                               select new FileInfoDTO()
+                               {
+                                   Id = (int)f.Id,
+                                   FileName = f.name,
+                                   FileSize = f.size,
+                                   FileType = f.type
+                               });
+
+                    if (res.Count() > 0)
+                    {
+                        return new FilesListDTO()
+                        {
+                            Files = res.ToList(),
+                            SearchResult = "OK"
+                        };
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                // get method name using reflection
+                addLog(System.Reflection.MethodBase.GetCurrentMethod().Name, e.Message, "");
+            }
+
+            return new FilesListDTO()
+            {
+                SearchResult = "OK"
+            };
+
+        }
+
         #endregion
 
+        public static void addLog(string method, string message, string additionalData)
+        {
+            try
+            {
+                using (p2pDataContext ctx = new p2pDataContext())
+                {
+                    //annonimos constarctor
+                    Log l = new p2pWcf.Log()
+                    {
+                        method = method,
+                        message = message,
+                        additionalData = additionalData,
+                        updateDate = DateTime.Now
+                    };
 
-        
+                    //insert into table
+                    ctx.Logs.InsertOnSubmit(l);
+                    ctx.SubmitChanges();
+                }
 
-       
+            }
+            catch (Exception)
+            {
 
+            }
+        }
+
+        public static StatisticsDTO getStatistics()
+        {
+            try
+            {
+                using (p2pDataContext ctx = new p2pDataContext())
+                {
+                    var res = (from u in ctx.Users
+                               select u).ToList();
+
+                    var res1 = (from u in ctx.Users
+                                select u.enabled).ToList();
+
+                    var res2 = (from f in ctx.Files
+                                select f).ToList();
+
+                    StatisticsDTO sd = new StatisticsDTO()
+                    {
+                        NumOfUsers = res.Count(),
+                        NumOfActiveUsers = res1.Count(),
+                        NumOfFiles = res2.Count()
+                    };
+
+                    return sd;
+
+                }
+            }
+            catch (Exception e)
+            {
+                // get method name using reflection
+                addLog(System.Reflection.MethodBase.GetCurrentMethod().Name, e.Message, "");
+            }
+            StatisticsDTO sd1 = new StatisticsDTO()
+            {
+                NumOfUsers = 0,
+                NumOfActiveUsers = 0,
+                NumOfFiles = 0
+            };
+            return sd1;
+
+        }
         //The admin can create user 
         public static void adminCreateUser(AdminCreateUserDTO acud) { }
 
@@ -383,7 +492,7 @@ namespace p2pWcf.DAL
 
 
     }
-   
+
 
 
 

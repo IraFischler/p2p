@@ -21,6 +21,8 @@ namespace p2p.Entities.File
         [DataMember]
         public string FileType { get; set; }
         [DataMember]
+        //public decimal FileSize { get; set; }
+        //[DataMember]
         public int Id { get; set; }
         
 

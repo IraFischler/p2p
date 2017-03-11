@@ -18,10 +18,18 @@
       <xs:element minOccurs="0" name="FileName" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="FileSize" type="xs:decimal" />
       <xs:element minOccurs="0" name="FileType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Id" type="xs:long" />
       <xs:element minOccurs="0" name="NumOfUsers" type="xs:long" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="FileInfoDTO" nillable="true" type="tns:FileInfoDTO" />
+  <xs:complexType name="FilesListDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Files" nillable="true" type="tns:ArrayOfFileInfoDTO" />
+      <xs:element minOccurs="0" name="SearchResult" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FilesListDTO" nillable="true" type="tns:FilesListDTO" />
   <xs:complexType name="FileRequestDTO">
     <xs:sequence>
       <xs:element minOccurs="0" name="FileName" nillable="true" type="xs:string" />

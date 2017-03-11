@@ -27,6 +27,12 @@ namespace p2pWeb.p2pService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/registerUser", ReplyAction="http://tempuri.org/IService1/registerUserResponse")]
         System.Threading.Tasks.Task<string> registerUserAsync(p2p.Entities.User.UserRegisterDTO urd);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/signoutUser", ReplyAction="http://tempuri.org/IService1/signoutUserResponse")]
+        string signoutUser(string xmlContent);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/signoutUser", ReplyAction="http://tempuri.org/IService1/signoutUserResponse")]
+        System.Threading.Tasks.Task<string> signoutUserAsync(string xmlContent);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/enableDisableUser", ReplyAction="http://tempuri.org/IService1/enableDisableUserResponse")]
         string enableDisableUser(p2p.Entities.User.UserInfoDTO uid);
         
@@ -57,11 +63,23 @@ namespace p2pWeb.p2pService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/searchFiles", ReplyAction="http://tempuri.org/IService1/searchFilesResponse")]
         System.Threading.Tasks.Task<p2p.Entities.File.FileSearchResultDTO> searchFilesAsync(string xmlContent);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/getFilesList", ReplyAction="http://tempuri.org/IService1/getFilesListResponse")]
+        p2p.Entities.File.FilesListDTO getFilesList();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/getFilesList", ReplyAction="http://tempuri.org/IService1/getFilesListResponse")]
+        System.Threading.Tasks.Task<p2p.Entities.File.FilesListDTO> getFilesListAsync();
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/downloadRequest", ReplyAction="http://tempuri.org/IService1/downloadRequestResponse")]
         p2p.Entities.File.FileResponseDTO downloadRequest(p2p.Entities.File.FileRequestDTO request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/downloadRequest", ReplyAction="http://tempuri.org/IService1/downloadRequestResponse")]
         System.Threading.Tasks.Task<p2p.Entities.File.FileResponseDTO> downloadRequestAsync(p2p.Entities.File.FileRequestDTO request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/getStatistics", ReplyAction="http://tempuri.org/IService1/getStatisticsResponse")]
+        p2p.Entities.Info.StatisticsDTO getStatistics();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/getStatistics", ReplyAction="http://tempuri.org/IService1/getStatisticsResponse")]
+        System.Threading.Tasks.Task<p2p.Entities.Info.StatisticsDTO> getStatisticsAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -107,6 +125,14 @@ namespace p2pWeb.p2pService {
             return base.Channel.registerUserAsync(urd);
         }
         
+        public string signoutUser(string xmlContent) {
+            return base.Channel.signoutUser(xmlContent);
+        }
+        
+        public System.Threading.Tasks.Task<string> signoutUserAsync(string xmlContent) {
+            return base.Channel.signoutUserAsync(xmlContent);
+        }
+        
         public string enableDisableUser(p2p.Entities.User.UserInfoDTO uid) {
             return base.Channel.enableDisableUser(uid);
         }
@@ -147,12 +173,28 @@ namespace p2pWeb.p2pService {
             return base.Channel.searchFilesAsync(xmlContent);
         }
         
+        public p2p.Entities.File.FilesListDTO getFilesList() {
+            return base.Channel.getFilesList();
+        }
+        
+        public System.Threading.Tasks.Task<p2p.Entities.File.FilesListDTO> getFilesListAsync() {
+            return base.Channel.getFilesListAsync();
+        }
+        
         public p2p.Entities.File.FileResponseDTO downloadRequest(p2p.Entities.File.FileRequestDTO request) {
             return base.Channel.downloadRequest(request);
         }
         
         public System.Threading.Tasks.Task<p2p.Entities.File.FileResponseDTO> downloadRequestAsync(p2p.Entities.File.FileRequestDTO request) {
             return base.Channel.downloadRequestAsync(request);
+        }
+        
+        public p2p.Entities.Info.StatisticsDTO getStatistics() {
+            return base.Channel.getStatistics();
+        }
+        
+        public System.Threading.Tasks.Task<p2p.Entities.Info.StatisticsDTO> getStatisticsAsync() {
+            return base.Channel.getStatisticsAsync();
         }
     }
 }

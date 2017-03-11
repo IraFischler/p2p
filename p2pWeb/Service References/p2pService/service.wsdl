@@ -6,6 +6,7 @@
       <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import namespace="http://schemas.datacontract.org/2004/07/p2p.Entities.User" />
       <xsd:import namespace="http://schemas.datacontract.org/2004/07/p2p.Entities.File" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/p2p.Entities.Info" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IService1_loginUser_InputMessage">
@@ -19,6 +20,12 @@
   </wsdl:message>
   <wsdl:message name="IService1_registerUser_OutputMessage">
     <wsdl:part name="parameters" element="tns:registerUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService1_signoutUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:signoutUser" />
+  </wsdl:message>
+  <wsdl:message name="IService1_signoutUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:signoutUserResponse" />
   </wsdl:message>
   <wsdl:message name="IService1_enableDisableUser_InputMessage">
     <wsdl:part name="parameters" element="tns:enableDisableUser" />
@@ -50,11 +57,23 @@
   <wsdl:message name="IService1_searchFiles_OutputMessage">
     <wsdl:part name="parameters" element="tns:searchFilesResponse" />
   </wsdl:message>
+  <wsdl:message name="IService1_getFilesList_InputMessage">
+    <wsdl:part name="parameters" element="tns:getFilesList" />
+  </wsdl:message>
+  <wsdl:message name="IService1_getFilesList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getFilesListResponse" />
+  </wsdl:message>
   <wsdl:message name="IService1_downloadRequest_InputMessage">
     <wsdl:part name="parameters" element="tns:downloadRequest" />
   </wsdl:message>
   <wsdl:message name="IService1_downloadRequest_OutputMessage">
     <wsdl:part name="parameters" element="tns:downloadRequestResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService1_getStatistics_InputMessage">
+    <wsdl:part name="parameters" element="tns:getStatistics" />
+  </wsdl:message>
+  <wsdl:message name="IService1_getStatistics_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getStatisticsResponse" />
   </wsdl:message>
   <wsdl:portType name="IService1">
     <wsdl:operation name="loginUser">
@@ -64,6 +83,10 @@
     <wsdl:operation name="registerUser">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/registerUser" message="tns:IService1_registerUser_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/registerUserResponse" message="tns:IService1_registerUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="signoutUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/signoutUser" message="tns:IService1_signoutUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/signoutUserResponse" message="tns:IService1_signoutUser_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="enableDisableUser">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/enableDisableUser" message="tns:IService1_enableDisableUser_InputMessage" />
@@ -85,9 +108,17 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/searchFiles" message="tns:IService1_searchFiles_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/searchFilesResponse" message="tns:IService1_searchFiles_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="getFilesList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/getFilesList" message="tns:IService1_getFilesList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/getFilesListResponse" message="tns:IService1_getFilesList_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="downloadRequest">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/downloadRequest" message="tns:IService1_downloadRequest_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/downloadRequestResponse" message="tns:IService1_downloadRequest_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getStatistics">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/getStatistics" message="tns:IService1_getStatistics_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/getStatisticsResponse" message="tns:IService1_getStatistics_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IService1" type="tns:IService1">
@@ -103,6 +134,15 @@
     </wsdl:operation>
     <wsdl:operation name="registerUser">
       <soap:operation soapAction="http://tempuri.org/IService1/registerUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="signoutUser">
+      <soap:operation soapAction="http://tempuri.org/IService1/signoutUser" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -155,8 +195,26 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="getFilesList">
+      <soap:operation soapAction="http://tempuri.org/IService1/getFilesList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="downloadRequest">
       <soap:operation soapAction="http://tempuri.org/IService1/downloadRequest" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getStatistics">
+      <soap:operation soapAction="http://tempuri.org/IService1/getStatistics" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

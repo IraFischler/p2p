@@ -28,8 +28,9 @@ namespace p2pWpf
     /// </summary>
     public partial class MainWindow : Window
     {
-        long userId;
+        string configContent;
         List<FileInfoDTO> userFiles;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -46,9 +47,11 @@ namespace p2pWpf
         private void OnLoad()
         {
             logoutBtn.Visibility = System.Windows.Visibility.Hidden;
+            logoutBtn.IsEnabled = false;
             string dir = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             string xmlPath = (dir + @"\MyConfig.xml");
-            string configContent = File.ReadAllText(xmlPath);
+            configContent = File.ReadAllText(xmlPath);
+
             if (configContent != "")
             {
                 Type _type = typeof(UserLoginDTO);
@@ -60,13 +63,12 @@ namespace p2pWpf
                 portTb.Text = uld.Port.ToString();
                 inputFilesDirectoryTb.Text = uld.DownloadPath;
                 outputFilesDirectoryTb.Text = uld.UploadPath;
-                userId = uld.Id;
             }
-        
         }
 
         private void loginBtn_Click(object sender, RoutedEventArgs e)
         {
+            loginBtn.IsEnabled = false;
             if (validateForm())
             {
                 XmlDocument xmlDoc = new XmlDocument();
@@ -76,12 +78,13 @@ namespace p2pWpf
                 FileStream fs = File.OpenWrite(xmlPath);
 
                 var files = Directory.GetFiles(inputFilesDirectoryTb.Text);
+
                 foreach (var fPath in files)
                 {
                     FileInfo fInfo = new FileInfo(fPath);
                     FileInfoDTO fid = new FileInfoDTO()
                     {
-                        FileName = fInfo.Name.Replace(fInfo.Extension,""),
+                        FileName = fInfo.Name.Replace(fInfo.Extension, ""),
                         FileType = fInfo.Extension,
                         FileSize = Math.Round((decimal)(fInfo.Length / 1000000), 2)
                     };
@@ -99,35 +102,40 @@ namespace p2pWpf
                     UploadPath = outputFilesDirectoryTb.Text,
                     Files = userFiles
                 };
+
                 wr.Serialize(fs, user);
                 fs.Close();
 
                 //call to server 
                 //xmlDoc.InnerXml
-                Service1Client client = new Service1Client();
-                var result = client.loginUser(p2p.Utils.XmlFormatter.GetXMLFromObject(user));
-                if (result == "OK")
+                using (Service1Client client = new Service1Client())
                 {
-                    //hide the login btn and replace by logout btn
-                    loginBtn.Visibility = System.Windows.Visibility.Hidden;
-                    logoutBtn.Visibility = System.Windows.Visibility.Visible;
-                    
-                    DownloadWindow dw = new DownloadWindow()
+                    var result = client.loginUser(p2p.Utils.XmlFormatter.GetXMLFromObject(user));
+                    if (result == "OK")
                     {
-                        UserName = userNameTb.Text,
-                        Password = passwordTb.Text,
-                        Parent = this
-                    };
-                    this.Hide();
-                    dw.Show();
-                }
-                else
-                {
-                    MessageBox.Show(result);
+                        //hide the login btn and replace by logout btn
+                        loginBtn.Visibility = System.Windows.Visibility.Hidden;
+                        logoutBtn.Visibility = System.Windows.Visibility.Visible;
+                        logoutBtn.IsEnabled = true;
+
+                        DownloadWindow dw = new DownloadWindow()
+                        {
+                            UserName = userNameTb.Text,
+                            Password = passwordTb.Text,
+                            Parent = this
+                        };
+                        this.Hide();
+                        dw.Show();
+                    }
+                    else
+                    {
+                        MessageBox.Show(result + ": Login process failed");
+                    }
                 }
             }
         }
 
+        //Check each textBox is not null of empty
         private bool validateForm()
         {
             if (IsNullOrEmpty("User name", userNameTb.Text))
@@ -153,10 +161,11 @@ namespace p2pWpf
             if (IsNullOrEmpty("Upload directory path", outputFilesDirectoryTb.Text))
             {
                 return false;
-            }           
+            }
             return true;
         }
 
+        //If textBox empty notify user
         public static bool IsNullOrEmpty(string property, string value)
         {
             if (String.IsNullOrEmpty(value))
@@ -167,15 +176,23 @@ namespace p2pWpf
             return false;
         }
 
+        //If user decide to signout change user to be disabled and delete all his files
         private void logoutBtn_Click(object sender, RoutedEventArgs e)
         {
-            UserInfoDTO u = new UserInfoDTO()
-            {
-                Id = userId
-            };
+            Type _type = typeof(UserLoginDTO);
+            UserLoginDTO uld = (UserLoginDTO)(p2p.Utils.XmlFormatter.GetObjectFromXML(configContent, _type));
+
             using (Service1Client client = new Service1Client())
             {
-                var result = client.deleteUser(u);    
+                var result = client.signoutUser(p2p.Utils.XmlFormatter.GetXMLFromObject(uld));
+                if (result == "OK")
+                {
+                    MessageBox.Show("User signout succesfullty");
+                }
+                else
+                {
+                    MessageBox.Show(result+ ": User failed to signout");
+                }
             }
         }
     }

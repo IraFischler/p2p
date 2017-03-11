@@ -111,6 +111,8 @@
     <None Include="Properties\DataSources\p2p.Entities.File.FileRequestDTO.datasource" />
     <None Include="Properties\DataSources\p2p.Entities.File.FileResponseDTO.datasource" />
     <None Include="Properties\DataSources\p2p.Entities.File.FileSearchResultDTO.datasource" />
+    <None Include="Properties\DataSources\p2p.Entities.File.FilesListDTO.datasource" />
+    <None Include="Properties\DataSources\p2p.Entities.Info.StatisticsDTO.datasource" />
     <None Include="Properties\DataSources\p2p.Entities.User.UsersListDTO.datasource" />
     <None Include="Properties\DataSources\p2pWcf.CompositeType.datasource" />
     <None Include="Properties\Settings.settings">
@@ -119,6 +121,9 @@
     </None>
     <AppDesigner Include="Properties\" />
     <None Include="Service References\p2pService\p2p.Entities.File.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\p2pService\p2p.Entities.Info.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\p2pService\p2p.Entities.User.xsd">
@@ -136,12 +141,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\p2pWcf\p2pWcf.csproj">
-      <Project>{0589daa3-52dc-48e2-8f89-871436671c19}</Project>
-      <Name>p2pWcf</Name>
-    </ProjectReference>
     <ProjectReference Include="..\p2p\p2p.csproj">
-      <Project>{f67869bc-44d0-4939-b051-923539a100fc}</Project>
+      <Project>{F67869BC-44D0-4939-B051-923539A100FC}</Project>
       <Name>p2p</Name>
     </ProjectReference>
   </ItemGroup>

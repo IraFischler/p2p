@@ -76,6 +76,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.DynamicData" />
@@ -104,7 +105,12 @@
     <Content Include="Properties\DataSources\p2p.Entities.File.FileResponseDTO.datasource" />
     <Content Include="Properties\DataSources\p2p.Entities.File.FileSearchResultDTO.datasource" />
     <Content Include="Properties\DataSources\p2p.Entities.User.UsersListDTO.datasource" />
+    <Content Include="Properties\DataSources\p2p.Entities.Info.StatisticsDTO.datasource" />
+    <Content Include="Properties\DataSources\p2p.Entities.File.FilesListDTO.datasource" />
     <None Include="Service References\p2pService\p2p.Entities.File.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\p2pService\p2p.Entities.Info.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\p2pService\p2p.Entities.User.xsd">
@@ -133,6 +139,7 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <Content Include="Registration.aspx" />
+    <Content Include="Statistics.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +169,13 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Statistics.aspx.cs">
+      <DependentUpon>Statistics.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Statistics.aspx.designer.cs">
+      <DependentUpon>Statistics.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
