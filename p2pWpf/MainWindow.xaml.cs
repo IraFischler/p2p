@@ -35,12 +35,6 @@ namespace p2pWpf
         {
             InitializeComponent();
             userFiles = new List<FileInfoDTO>();
-            userNameTb.Text = "orin";
-            passwordTb.Text = "123";
-            ipTb.Text = "000";
-            portTb.Text = "80";
-            inputFilesDirectoryTb.Text = @"D:\a";
-            outputFilesDirectoryTb.Text = @"D:\a";
             OnLoad();
         }
 

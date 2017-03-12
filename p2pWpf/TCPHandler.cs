@@ -76,6 +76,9 @@ namespace p2pWpf
                 string[] str = new string[2];
                 str = handler.RemoteEndPoint.ToString().Split(':');
                 int bytesRead = handler.EndReceive(ar);
+                int fileNameLen = BitConverter.ToInt32(state.buffer, 0);
+                string fileName = Encoding.UTF8.GetString(state.buffer, 4, fileNameLen);
+                        
             }
             catch (Exception ex)
             {
@@ -88,7 +91,7 @@ namespace p2pWpf
         {
             // Establish the local endpoint for the socket.
             IPHostEntry ipHost = Dns.GetHostEntry(ip);
-            IPAddress ipAddr = ipHost.AddressList[0];
+            IPAddress ipAddr = ipHost.AddressList[1];
             IPEndPoint ipEndPoint = new IPEndPoint(ipAddr, port);
 
             // Create a TCP socket.

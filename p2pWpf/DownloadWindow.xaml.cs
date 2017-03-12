@@ -63,7 +63,7 @@ namespace p2pWpf
             using (Service1Client client = new Service1Client())
             {
                 var res = client.downloadRequest(request);
-                tcpH.sendRequest(res.Ip, res.Port, "getFile");
+                tcpH.sendRequest(res.Ip, res.Port, request.FileName+request.FileType);
             }
         }
 
