@@ -12,6 +12,8 @@ namespace p2pWpf
     class TCPHandler
     {
 
+
+
         Socket listener;
         static ManualResetEvent allDone = new ManualResetEvent(false);
 
