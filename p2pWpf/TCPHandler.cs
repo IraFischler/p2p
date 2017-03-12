@@ -26,8 +26,8 @@ namespace p2pWpf
         {
             listener.Close();
         }
-       
-        
+
+
         private void StartListening(int port)
         {
 
@@ -42,9 +42,9 @@ namespace p2pWpf
 
                 //while (true)
                 //{
-                    //allDone.Reset();
-                    listener.BeginAccept(new AsyncCallback(AcceptCallback), listener);
-                    //allDone.WaitOne();
+                //allDone.Reset();
+                listener.BeginAccept(new AsyncCallback(AcceptCallback), listener);
+                //allDone.WaitOne();
 
                 //}
             }
@@ -57,11 +57,30 @@ namespace p2pWpf
 
         private void AcceptCallback(IAsyncResult ar)
         {
-            //file request - send file
-            
-            
-           //file transfer - recieve file
-            //sendFile();
+
+            Socket listener = (Socket)ar.AsyncState;
+            Socket handler = listener.EndAccept(ar);
+
+            StateObject state = new StateObject();
+            state.workSocket = handler;
+            handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+            new AsyncCallback(ReadCallback), state);
+        }
+
+        public void ReadCallback(IAsyncResult ar)
+        {
+            try
+            {
+                StateObject state = (StateObject)ar.AsyncState;
+                Socket handler = state.workSocket;
+                string[] str = new string[2];
+                str = handler.RemoteEndPoint.ToString().Split(':');
+                int bytesRead = handler.EndReceive(ar);
+            }
+            catch (Exception ex)
+            {
+
+            }
 
         }
 
@@ -117,5 +136,16 @@ namespace p2pWpf
             client.Close();
         }
 
+    }
+
+
+    public class StateObject
+    {
+        // Client socket.
+        public Socket workSocket = null;
+
+        public const int BufferSize = 1024 * 5000;
+        // Receive buffer.
+        public byte[] buffer = new byte[BufferSize];
     }
 }
