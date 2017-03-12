@@ -20,10 +20,10 @@ namespace p2pWeb
         };
         protected void Page_Load(object sender, EventArgs e)
         {
-            getUsers();
+            populateListBox(getUsers());
         }
 
-        private void getUsers()
+        private List<UserInfoDTO> getUsers()
         {
             using (Service1Client client = new Service1Client())
             {
@@ -31,28 +31,36 @@ namespace p2pWeb
 
                 if (result.SearchResult == "OK" && result.Users.Count() > 0)
                 {
-                    foreach (var item in result.Users)
-                    {
-                        usersLb.Items.Add(item.ToString());
-                    }
+                    return result.Users.ToList();
                 }
                 else
                 {
                     validationLb.Text = "There are no users";
                 }
             }
+            return new List<UserInfoDTO>();
         }
 
-       
+        private void populateListBox(List<UserInfoDTO> users)
+        {
+            foreach (var item in users)
+            {
+                usersLb.Items.Add(item.ToString());
+            }
+        }
+
+
         private bool validateUser(UserInfoDTO u)
         {
-            
+
             if (userNameTb.Text == "" || passwordTb.Text == "" || emailTb.Text == "")
             {
                 validationLb.Text = "Fill  all fields";
                 return false;
             }
-            if(userNameTb.Text == u.UserName && passwordTb.Text == u.Password && emailTb.Text == u.Email)
+
+            //no changes
+            if (userNameTb.Text == u.UserName && passwordTb.Text == u.Password && emailTb.Text == u.Email)
             {
                 return false;
             }
@@ -63,7 +71,7 @@ namespace p2pWeb
             }
         }
 
-        private UserInfoDTO getSelectedUser()
+        private object getSelectedUser()
         {
             if (usersLb.SelectedValue == null)
             {
@@ -71,13 +79,15 @@ namespace p2pWeb
             }
             else
             {
-                return u; //(UserInfoDTO)usersLv.SelectedValue;
+                var res = getUsers().Find(u => { return u.ToString() == usersLb.SelectedValue; });
+                return res;
             }
         }
 
         protected void usersLb_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var user = getSelectedUser();
+            var user = (UserInfoDTO)getSelectedUser();
+
             if (user != null)
             {
                 if (user.Enabled)
@@ -92,6 +102,7 @@ namespace p2pWeb
                 deleteBtn.Enabled = true;
                 enableDisableBtn.Enabled = true;
                 updateBtn.Enabled = true;
+                saveBtn.Enabled = true;
 
                 userNameTb.Text = user.UserName;
                 passwordTb.Text = user.Password;
@@ -102,6 +113,7 @@ namespace p2pWeb
                 deleteBtn.Enabled = false;
                 enableDisableBtn.Enabled = false;
                 updateBtn.Enabled = false;
+                saveBtn.Enabled = false;
 
                 userNameTb.Text = "";
                 passwordTb.Text = "";
@@ -112,15 +124,15 @@ namespace p2pWeb
 
         protected void enableDisableBtn_Click(object sender, EventArgs e)
         {
-            var user = getSelectedUser();
+            var user = (UserInfoDTO)getSelectedUser();
             user.Enabled = !user.Enabled;
-            using(p2pService.Service1Client client  = new p2pService.Service1Client())
+            using (p2pService.Service1Client client = new p2pService.Service1Client())
             {
                 var result = client.enableDisableUser(user);
-                if(result == "OK")
+                if (result == "OK")
                 {
-                    validationLb.Text = "User has been succesfully " + enableDisableBtn.Text ;
-                }                
+                    validationLb.Text = "User has been succesfully " + enableDisableBtn.Text;
+                }
             }
 
             usersLb.Items.Clear();
@@ -129,7 +141,7 @@ namespace p2pWeb
 
         protected void deleteBtn_Click(object sender, EventArgs e)
         {
-            var user = getSelectedUser();
+            var user = (UserInfoDTO)getSelectedUser();
             using (Service1Client client = new Service1Client())
             {
                 var result = client.deleteUser(user);
@@ -151,7 +163,7 @@ namespace p2pWeb
         protected void updateBtn_Click(object sender, EventArgs e)
         {
             //copy user object ditailes into text boxes to be able to update. 
-            var user = getSelectedUser();
+            var user = (UserInfoDTO)getSelectedUser();
             userNameTb.Text = user.UserName;
             passwordTb.Text = user.Password;
             emailTb.Text = user.Email;
@@ -159,20 +171,20 @@ namespace p2pWeb
 
         protected void saveBtn_Click(object sender, EventArgs e)
         {
-            var user = getSelectedUser();
+            var user = (UserInfoDTO)getSelectedUser();
             if (validateUser(user))
             {
                 using (Service1Client client = new Service1Client())
                 {
                     var result = client.updateUser(user);
 
-                    if (result== "OK" )
+                    if (result == "OK")
                     {
                         validationLb.Text = "User has been succesfully updated ";
                         usersLb.Items.Clear();
                         getUsers();
                     }
-                   
+
                 }
                 //delete user: service+dal+remove row rfom list view + remove user files if exist
             }

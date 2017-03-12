@@ -14,7 +14,7 @@
         <asp:Button ID="deleteBtn" runat="server" Text="Delete" Enabled ="false" OnClick="deleteBtn_Click"/>
         <asp:Button ID="updateBtn" runat="server" Text="Update" Enabled ="false" OnClick="updateBtn_Click"/><br />
         
-        <asp:ListBox ID="usersLb" runat="server" OnSelectedIndexChanged="usersLb_SelectedIndexChanged"></asp:ListBox><br />
+        <asp:ListBox ID="usersLb" runat="server" AutoPostBack="true" OnSelectedIndexChanged="usersLb_SelectedIndexChanged"></asp:ListBox><br />
        
         <asp:TextBox  placeholder="Enter Email" ID ="emailTb" runat ="server"></asp:TextBox>
         <asp:TextBox  placeholder="Enter User Name" ID ="userNameTb" runat ="server"></asp:TextBox>

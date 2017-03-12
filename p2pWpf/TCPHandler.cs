@@ -89,6 +89,10 @@ namespace p2pWpf
                 else
                 {
                     System.IO.File.WriteAllText(@"C:\a\" + reqFileName, content);
+
+
+                    //stop timer and write into label
+
                 }
             }
             catch (Exception ex)
@@ -122,6 +126,11 @@ namespace p2pWpf
 
             // There is a text file test.txt located in the root directory.
             string fileName = _fileRequest; //my ip, my port + req file
+
+
+
+            //start timer and write into label
+
 
             // Send file fileName to remote device
             Console.WriteLine("Sending {0} to the host.", fileName);
