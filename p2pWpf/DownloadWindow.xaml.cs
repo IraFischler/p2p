@@ -6,8 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,15 +31,19 @@ namespace p2pWpf
         public string UserName { get; set; }
         public string Password { get; set; }
         public MainWindow Parent { get; set; }
-        const int PORT = 8005;
+        int PORT = 8005;
+        int IP = 8005;
         TcpListener listener;
         TcpClient client;
         NetworkStream ns;
+        Socket clientsock;
 
         public DownloadWindow()
         {
             InitializeComponent();
             listener = TcpListener.Create(PORT);
+            Connect();
+            listenclient();
 
         }
 
@@ -63,13 +69,9 @@ namespace p2pWpf
             using (Service1Client client = new Service1Client())
             {
                 var res = client.downloadRequest(request);
+                downloadFromServer(clientsock, request.FileName, 255);
+                //out
 
-                //DownloadFile df = new DownloadFile()
-                //{
-                //    Ip = res.Ip,
-                //    Port = res.Port,
-                //    //Request = request
-                //};
             }
         }
 
@@ -111,69 +113,110 @@ namespace p2pWpf
             catch (Exception)
             {
             }
-           
+
             Parent.Show();
         }
 
-        private async  void fileTransferring(string fileName, string ip, int port)
+        private void Connect()
         {
-            // Listen           
-            listener.Start();
-            client = await listener.AcceptTcpClientAsync();
-            ns = client.GetStream();
-
-            // Get file info
-            long fileLength;
-            string fileName;
+            try
             {
-                byte[] fileNameBytes;
-                byte[] fileNameLengthBytes = new byte[4]; //int32
-                byte[] fileLengthBytes = new byte[8]; //int64
+                Socket serversocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                serversocket.Blocking = true;
 
-                await ns.ReadAsync(fileLengthBytes, 0, 8); // int64
-                await ns.ReadAsync(fileNameLengthBytes, 0, 4); // int32
-                fileNameBytes = new byte[BitConverter.ToInt32(fileNameLengthBytes, 0)];
-                await ns.ReadAsync(fileNameBytes, 0, fileNameBytes.Length);
+                IPHostEntry IPHost = Dns.Resolve(IP.ToString()); //Dns.Resolve(textBox1.Text);
+                string[] aliases = IPHost.Aliases;
+                IPAddress[] addr = IPHost.AddressList;
 
-                fileLength = BitConverter.ToInt64(fileLengthBytes, 0);
-                fileName = ASCIIEncoding.ASCII.GetString(fileNameBytes);
+                IPEndPoint ipepServer = new IPEndPoint(addr[0], PORT);
+                serversocket.Connect(ipepServer);
+                Socket clientsock = serversocket;
+
+                Thread MainThread = new Thread(new ThreadStart(listenclient));
+                MainThread.Start();
+                // MessageBox.Show("Connected successfully", "Infomation", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-
-            // Get permission
-            if (MessageBox.Show(string.Format("Requesting permission to receive file:\r\n\r\n{0}\r\n{1} bytes long", fileName, fileLength), "", MessageBoxButton.YesNo).Equals(!DialogResult.Equals("OK")))
+            catch (SocketException se)
             {
-                return;
+                Console.WriteLine(se.Message);
             }
-
-            // Set save location
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.CreatePrompt = false;
-            sfd.OverwritePrompt = true;
-            sfd.FileName = fileName;
-            if (sfd.ShowDialog() != DialogResult.Equals("OK"))
+            catch (Exception eee)
             {
-                ns.WriteByte(0); // Permission denied
-                return;
+                // MessageBox.Show("Socket Connect Error.\n\n" + eee.Message + "\nPossible Cause: Server Already running. Check the tasklist for running processes", "Startup Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            ns.WriteByte(1); // Permission grantedd
-            FileStream fileStream = File.Open(sfd.FileName, FileMode.Create);
-
-
-
-            int read;
-            int totalRead = 0;
-            byte[] buffer = new byte[32 * 1024]; // 32k chunks
-            while ((read = await ns.ReadAsync(buffer, 0, buffer.Length)) > 0)
-            {
-                await fileStream.WriteAsync(buffer, 0, read);
-                totalRead += read;
-
-            }
-
-            fileStream.Dispose();
-            client.Close();
-            MessageBox.Show("File successfully received");
-
         }
+
+        void listenclient()
+        {
+            Socket sock = clientsock;
+            string cmd = " eliran";
+            byte[] sender = System.Text.Encoding.ASCII.GetBytes("CLIENT " + cmd);
+            sock.Send(sender, sender.Length, 0);
+
+            while (sock != null)
+            {
+                //cmd = "";
+                byte[] recs = new byte[32767];
+                int rcount = sock.Receive(recs, recs.Length, 0);
+                string clientmessage = System.Text.Encoding.ASCII.GetString(recs);
+                clientmessage = clientmessage.Substring(0, rcount);
+
+                string smk = clientmessage;
+
+
+                var cmdList = clientmessage.Split(' ');
+                string execmd = cmdList[0];
+
+                sender = null;
+                sender = new Byte[32767];
+
+                string parm1 = "";
+
+
+                if (execmd == "CommitRequest")
+                {
+                    for (int i = 3; i < cmdList.Length - 1; i++)
+                    {
+                        if (i % 2 == 1)
+                        {
+                            // sendComment("downloadFile " + cmdList[i]); // after receiving this, server will upload the file requested
+                            downloadFromServer(sock, cmdList[i], long.Parse(cmdList[i + 1]));
+                        }
+
+                    }
+                    continue;
+                }
+            }
+        }
+
+
+        private void downloadFromServer(Socket s, string fileN, long fileS)
+        {
+            Socket sock = s;
+            string rootDir;
+            rootDir = @"D:/a";//@"D:\Client Data" + "\\" + userID + "\\" + mName; //@"D:\Client Data" + "\\" + userID + "\\" + mName;
+            Directory.CreateDirectory(rootDir);
+            System.IO.FileStream fout = new System.IO.FileStream(rootDir + "\\" + fileN, FileMode.Create, FileAccess.Write);
+            NetworkStream nfs = new NetworkStream(sock);
+            long size = fileS;
+            long rby = 0;
+            try
+            {
+                while (rby < size)
+                {
+                    byte[] buffer = new byte[1024];
+                    int i = nfs.Read(buffer, 0, buffer.Length);
+                    fout.Write(buffer, 0, (int)i);
+                    rby = rby + i;
+                }
+                fout.Close();
+            }
+            catch (Exception ed)
+            {
+                Console.WriteLine("A Exception occured in file transfer" + ed.ToString());
+                MessageBox.Show(ed.Message);
+            }
+        }
+
     }
 }

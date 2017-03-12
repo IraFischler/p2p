@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using p2p.Entities;
 using p2p.Entities.User;
-using p2p.Entities.Admin;
 using p2p.Entities.File;
 using p2p.Entities.Info;
 using System.Windows;
@@ -477,17 +476,6 @@ namespace p2pWcf.DAL
             return sd1;
 
         }
-        //The admin can create user 
-        public static void adminCreateUser(AdminCreateUserDTO acud) { }
-
-        //The admin can create user 
-        public static void adminDeleteUser(AdminDeleteUserDTO adud) { }
-
-        //The admin is able to block/ unblock user and update the user status 
-        public static bool adminDisableEnableUser(AdminDisableEnableUserDTO adeu) { return false; }
-
-        //Only the admin able to update user info
-        public static bool adminUpdateUserInfo(AdminUpdateUserInfoDTO auuid) { return false; }
 
 
 
