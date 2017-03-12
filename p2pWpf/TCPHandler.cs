@@ -16,6 +16,8 @@ namespace p2pWpf
 
         Socket listener;
         static ManualResetEvent allDone = new ManualResetEvent(false);
+        int PORT = 8005;
+        string reqFileName;
 
         public TCPHandler(int port)
         {
@@ -76,14 +78,17 @@ namespace p2pWpf
                 string[] str = new string[2];
                 str = handler.RemoteEndPoint.ToString().Split(':');
                 int bytesRead = handler.EndReceive(ar);
-                int fileNameLen = BitConverter.ToInt32(state.buffer, 0);
-                string fileName = Encoding.UTF8.GetString(state.buffer, 4, fileNameLen);
+                string content = Encoding.UTF8.GetString(state.buffer, 0, bytesRead);
 
-                string[] req = fileName.Split(':');
+                string[] req = content.Split(':');
 
-                if (req != null && req.Length == 2 && req[0] == "sendFile" )
+                if (req != null && req.Length == 2 && req[0] == "sendFile")
                 {
-                    sendFile(str[0], str[1], req[1]);
+                    sendFile(str[0], PORT, req[1]);
+                }
+                else
+                {
+                    System.IO.File.WriteAllText(@"C:\a\" + reqFileName, content);
                 }
             }
             catch (Exception ex)
@@ -98,7 +103,7 @@ namespace p2pWpf
             // Establish the local endpoint for the socket.
             IPHostEntry ipHost = Dns.GetHostEntry(ip);
             IPAddress ipAddr = ipHost.AddressList[1];
-            IPEndPoint ipEndPoint = new IPEndPoint(ipAddr, port);
+            IPEndPoint ipEndPoint = new IPEndPoint(ipAddr, PORT);
 
             // Create a TCP socket.
             Socket client = new Socket(AddressFamily.InterNetwork,
@@ -112,19 +117,20 @@ namespace p2pWpf
 
             // Send file fileName to remote device
             Console.WriteLine("Sending {0} to the host.", fileName);
-            client.Send(Encoding.ASCII.GetBytes(fileName));
+            reqFileName = fileName;
+            client.Send(Encoding.ASCII.GetBytes("sendFile:" + fileName));
 
             // Release the socket.
             client.Shutdown(SocketShutdown.Both);
             client.Close();
         }
 
-        public void sendFile(string ip,string port, string _fileName)
+        public void sendFile(string ip, int port, string _fileName)
         {
             // Establish the local endpoint for the socket.
             IPHostEntry ipHost = Dns.GetHostEntry(ip);
             IPAddress ipAddr = ipHost.AddressList[0];
-            IPEndPoint ipEndPoint = new IPEndPoint(ipAddr, int.Parse(port));
+            IPEndPoint ipEndPoint = new IPEndPoint(ipAddr, port);
 
             // Create a TCP socket.
             Socket client = new Socket(AddressFamily.InterNetwork,
@@ -138,7 +144,7 @@ namespace p2pWpf
 
             // Send file fileName to remote device
             Console.WriteLine("Sending {0} to the host.", fileName);
-            client.SendFile(fileName);
+            client.SendFile(@"c:\a\" + fileName);
 
             // Release the socket.
             client.Shutdown(SocketShutdown.Both);
