@@ -40,7 +40,7 @@ namespace p2pWpf
             try
             {
                 listener.Bind(ipEnd);
-                listener.Listen(10);
+                listener.Listen(100);
 
                 //while (true)
                 //{
@@ -101,8 +101,16 @@ namespace p2pWpf
         public void sendRequest(string ip, int port, string _fileRequest)
         {
             // Establish the local endpoint for the socket.
-            IPHostEntry ipHost = Dns.GetHostEntry(ip);
-            IPAddress ipAddr = ipHost.AddressList[1];
+            IPHostEntry ipHost = Dns.GetHostEntry(ip); 
+            IPAddress ipAddr;
+            if (ipHost.AddressList.Length == 2)
+            {
+                ipAddr = ipHost.AddressList[1];
+            }
+            else {
+                ipAddr = ipHost.AddressList[0];
+            }
+
             IPEndPoint ipEndPoint = new IPEndPoint(ipAddr, PORT);
 
             // Create a TCP socket.
