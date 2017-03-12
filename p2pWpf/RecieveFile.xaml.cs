@@ -23,22 +23,13 @@ namespace p2pWpf
     public partial class RecieveFile : Window
     {
         const int PORT = 8005;
-        public RecieveFile()
-        {
-            InitializeComponent();
-        }
-
-        private void resetControls()
-        {
-            textBox.Text = "Waiting for connection...";
-        }
-
+        
         protected override async void OnContentRendered(EventArgs e)
         {
             // Listen
             TcpListener listener = TcpListener.Create(PORT);
             listener.Start();
-            textBox.Text = "Waiting for connection...";
+         
             TcpClient client = await listener.AcceptTcpClientAsync();
             NetworkStream ns = client.GetStream();
 
@@ -78,8 +69,7 @@ namespace p2pWpf
             ns.WriteByte(1); // Permission grantedd
             FileStream fileStream = File.Open(sfd.FileName, FileMode.Create);
 
-            // Receive
-            textBox.Text = "Receiving...";
+         
                      
             int read;
             int totalRead = 0;
@@ -94,7 +84,7 @@ namespace p2pWpf
             fileStream.Dispose();
             client.Close();
             MessageBox.Show("File successfully received");
-            resetControls();
+          
         }
     }
 }
