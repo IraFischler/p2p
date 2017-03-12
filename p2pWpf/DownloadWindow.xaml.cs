@@ -31,20 +31,14 @@ namespace p2pWpf
         public string UserName { get; set; }
         public string Password { get; set; }
         public MainWindow Parent { get; set; }
+        TCPHandler tcpH;
         int PORT = 8005;
-        int IP = 8005;
-        TcpListener listener;
-        TcpClient client;
-        NetworkStream ns;
-        Socket clientsock;
+      
 
         public DownloadWindow()
         {
             InitializeComponent();
-            listener = TcpListener.Create(PORT);
-            Connect();
-            listenclient();
-
+            tcpH = new TCPHandler(PORT);
         }
 
         private void downloadBtn_Click(object sender, RoutedEventArgs e)
@@ -69,9 +63,7 @@ namespace p2pWpf
             using (Service1Client client = new Service1Client())
             {
                 var res = client.downloadRequest(request);
-                downloadFromServer(clientsock, request.FileName, 255);
-                //out
-
+                tcpH.sendRequest(res.Ip, res.Port, "getFile");
             }
         }
 
@@ -107,115 +99,13 @@ namespace p2pWpf
         {
             try
             {
-                client.Close();
-                listener.Stop();
+                tcpH.stopListening();
             }
             catch (Exception)
             {
             }
 
             Parent.Show();
-        }
-
-        private void Connect()
-        {
-            try
-            {
-                Socket serversocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                serversocket.Blocking = true;
-
-                IPHostEntry IPHost = Dns.Resolve(IP.ToString()); //Dns.Resolve(textBox1.Text);
-                string[] aliases = IPHost.Aliases;
-                IPAddress[] addr = IPHost.AddressList;
-
-                IPEndPoint ipepServer = new IPEndPoint(addr[0], PORT);
-                serversocket.Connect(ipepServer);
-                Socket clientsock = serversocket;
-
-                Thread MainThread = new Thread(new ThreadStart(listenclient));
-                MainThread.Start();
-                // MessageBox.Show("Connected successfully", "Infomation", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (SocketException se)
-            {
-                Console.WriteLine(se.Message);
-            }
-            catch (Exception eee)
-            {
-                // MessageBox.Show("Socket Connect Error.\n\n" + eee.Message + "\nPossible Cause: Server Already running. Check the tasklist for running processes", "Startup Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        void listenclient()
-        {
-            Socket sock = clientsock;
-            string cmd = " eliran";
-            byte[] sender = System.Text.Encoding.ASCII.GetBytes("CLIENT " + cmd);
-            sock.Send(sender, sender.Length, 0);
-
-            while (sock != null)
-            {
-                //cmd = "";
-                byte[] recs = new byte[32767];
-                int rcount = sock.Receive(recs, recs.Length, 0);
-                string clientmessage = System.Text.Encoding.ASCII.GetString(recs);
-                clientmessage = clientmessage.Substring(0, rcount);
-
-                string smk = clientmessage;
-
-
-                var cmdList = clientmessage.Split(' ');
-                string execmd = cmdList[0];
-
-                sender = null;
-                sender = new Byte[32767];
-
-                string parm1 = "";
-
-
-                if (execmd == "CommitRequest")
-                {
-                    for (int i = 3; i < cmdList.Length - 1; i++)
-                    {
-                        if (i % 2 == 1)
-                        {
-                            // sendComment("downloadFile " + cmdList[i]); // after receiving this, server will upload the file requested
-                            downloadFromServer(sock, cmdList[i], long.Parse(cmdList[i + 1]));
-                        }
-
-                    }
-                    continue;
-                }
-            }
-        }
-
-
-        private void downloadFromServer(Socket s, string fileN, long fileS)
-        {
-            Socket sock = s;
-            string rootDir;
-            rootDir = @"D:/a";//@"D:\Client Data" + "\\" + userID + "\\" + mName; //@"D:\Client Data" + "\\" + userID + "\\" + mName;
-            Directory.CreateDirectory(rootDir);
-            System.IO.FileStream fout = new System.IO.FileStream(rootDir + "\\" + fileN, FileMode.Create, FileAccess.Write);
-            NetworkStream nfs = new NetworkStream(sock);
-            long size = fileS;
-            long rby = 0;
-            try
-            {
-                while (rby < size)
-                {
-                    byte[] buffer = new byte[1024];
-                    int i = nfs.Read(buffer, 0, buffer.Length);
-                    fout.Write(buffer, 0, (int)i);
-                    rby = rby + i;
-                }
-                fout.Close();
-            }
-            catch (Exception ed)
-            {
-                Console.WriteLine("A Exception occured in file transfer" + ed.ToString());
-                MessageBox.Show(ed.Message);
-            }
         }
 
     }
