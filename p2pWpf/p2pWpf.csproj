@@ -149,8 +149,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MyConfig.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -137,7 +137,15 @@ namespace p2pWpf
         {
             // Establish the local endpoint for the socket.
             IPHostEntry ipHost = Dns.GetHostEntry(ip);
-            IPAddress ipAddr = ipHost.AddressList[0];
+            IPAddress ipAddr;
+            if (ipHost.AddressList.Length == 2)
+            {
+                ipAddr = ipHost.AddressList[1];
+            }
+            else
+            {
+                ipAddr = ipHost.AddressList[0];
+            }
             IPEndPoint ipEndPoint = new IPEndPoint(ipAddr, port);
 
             // Create a TCP socket.
