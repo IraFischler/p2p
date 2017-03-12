@@ -38,15 +38,15 @@ namespace p2pWpf
             try
             {
                 listener.Bind(ipEnd);
-                listener.Listen(100);
+                listener.Listen(10);
 
                 //while (true)
                 //{
-                //allDone.Reset();
-                listener.BeginAccept(new AsyncCallback(AcceptCallback), listener);
-                //allDone.WaitOne();
-
+                //    allDone.Reset();
+                //    listener.BeginAccept(new AsyncCallback(AcceptCallback), listener);
+                //    allDone.WaitOne();
                 //}
+                listener.BeginAccept(new AsyncCallback(AcceptCallback), listener);
             }
             catch (Exception ex)
             {
@@ -78,7 +78,13 @@ namespace p2pWpf
                 int bytesRead = handler.EndReceive(ar);
                 int fileNameLen = BitConverter.ToInt32(state.buffer, 0);
                 string fileName = Encoding.UTF8.GetString(state.buffer, 4, fileNameLen);
-                        
+
+                string[] req = fileName.Split(':');
+
+                if (req != null && req.Length == 2 && req[0] == "sendFile" )
+                {
+                    sendFile(str[0], str[1], req[1]);
+                }
             }
             catch (Exception ex)
             {
@@ -113,12 +119,12 @@ namespace p2pWpf
             client.Close();
         }
 
-        public void sendFile(string ip, int port, string _fileName)
+        public void sendFile(string ip,string port, string _fileName)
         {
             // Establish the local endpoint for the socket.
             IPHostEntry ipHost = Dns.GetHostEntry(ip);
             IPAddress ipAddr = ipHost.AddressList[0];
-            IPEndPoint ipEndPoint = new IPEndPoint(ipAddr, port);
+            IPEndPoint ipEndPoint = new IPEndPoint(ipAddr, int.Parse(port));
 
             // Create a TCP socket.
             Socket client = new Socket(AddressFamily.InterNetwork,
