@@ -56,6 +56,10 @@ namespace p2pWpf
             {
                 Type _type = typeof(UserLoginDTO);
                 UserLoginDTO uld = (UserLoginDTO)(p2p.Utils.XmlFormatter.GetObjectFromXML(configContent, _type));
+                if(uld == null)
+                {
+                    return;
+                }
 
                 userNameTb.Text = uld.UserName;
                 passwordTb.Text = uld.Password;
@@ -68,7 +72,7 @@ namespace p2pWpf
 
         private void loginBtn_Click(object sender, RoutedEventArgs e)
         {
-            loginBtn.IsEnabled = false;
+            
             if (validateForm())
             {
                 XmlDocument xmlDoc = new XmlDocument();

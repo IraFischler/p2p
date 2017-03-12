@@ -9,7 +9,7 @@
     <Grid>
         <TextBox x:Name="fileNameTb" HorizontalAlignment="Left" Height="23" Margin="99,27,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="339"/>
         <Label x:Name="fileNameLb" Content="File Name " HorizontalAlignment="Left" Margin="28,26,0,0" VerticalAlignment="Top"/>
-        <ListBox x:Name="resultsListBox" HorizontalAlignment="Left" Height="96" Margin="40,104,0,0" VerticalAlignment="Top" Width="447"/>
+        <ListBox x:Name="resultsListBox" HorizontalAlignment="Left" Height="96" Margin="38,97,0,0" VerticalAlignment="Top" Width="447"/>
         <Label x:Name="resultsLb" Content="Results " HorizontalAlignment="Left" Margin="28,57,0,0" VerticalAlignment="Top"/>
         <Button x:Name="downloadBtn" Content="Download" HorizontalAlignment="Left" Margin="225,226,0,0" VerticalAlignment="Top" Width="75" Click="downloadBtn_Click"/>
         <Button x:Name="searchBtn" Content="Search" HorizontalAlignment="Left" Margin="455,28,0,0" VerticalAlignment="Top" Width="51" RenderTransformOrigin="1.571,0.455" Click="searchBtn_Click"/>

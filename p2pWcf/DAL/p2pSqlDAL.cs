@@ -35,7 +35,7 @@ namespace p2pWcf.DAL
                                     where f.userId == uld.Id
                                     select f).ToList().SingleOrDefault();
 
-                        us.enabled = false;
+                        us.connected = false;
                         ctx.Files.DeleteOnSubmit(res2);
 
                         ctx.SubmitChanges();
@@ -176,6 +176,7 @@ namespace p2pWcf.DAL
                         us.port = uld.Port;
                         us.loginDate = DateTime.Now;
                         uld.Id = us.Id;
+                        us.connected = true;
 
                         foreach (var f in uld.Files)
                         {

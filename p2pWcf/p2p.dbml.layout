@@ -8,16 +8,16 @@
         <elementListCompartment Id="d77b6cf1-c896-492d-9b31-63c7e1f3b3fb" absoluteBounds="6.14, 1.46, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="09fa972b-bf5e-4723-be1d-4b408d61106c" absoluteBounds="1.375, 0.625, 2, 2.7324039713541666">
-      <DataClassMoniker Name="/p2pDataContext/User" />
-      <nestedChildShapes>
-        <elementListCompartment Id="e50cb86c-875b-41b7-a235-83b820dc9208" absoluteBounds="1.3900000000000001, 1.085, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
     <classShape Id="30919133-a28b-41a2-bcd1-dd9e4d213231" absoluteBounds="3.875, 1, 2, 1.9631982421875">
       <DataClassMoniker Name="/p2pDataContext/File" />
       <nestedChildShapes>
         <elementListCompartment Id="b0f3b9bb-2ad1-4cff-befc-4b2f81b30270" absoluteBounds="3.8899999999999997, 1.46, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="b0022ac2-ca1d-46a2-9886-f444d08f799d" absoluteBounds="1.125, 0.75, 2, 2.9247054036458331">
+      <DataClassMoniker Name="/p2pDataContext/User" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5e04225c-1ae8-477f-8e23-583069205ec9" absoluteBounds="1.1400000000000001, 1.21, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>

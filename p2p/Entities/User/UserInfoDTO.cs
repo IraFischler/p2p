@@ -20,7 +20,7 @@ namespace p2p.Entities.User
         [DataMember]
         public string Email { get; set; }
         [DataMember]
-        public bool Enabled { get; set; }
+        public bool Enabled { get; set; }// change to connected 
 
 
 
