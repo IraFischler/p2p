@@ -45,16 +45,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Admin\AdminCreateUserDTO.cs" />
-    <Compile Include="Entities\Admin\AdminDeleteUserDTO.cs" />
-    <Compile Include="Entities\Admin\AdminDisableEnableUserDTO.cs" />
-    <Compile Include="Entities\Admin\AdminLoginDTO.cs" />
-    <Compile Include="Entities\Admin\AdminUpdateFileDTO.cs" />
-    <Compile Include="Entities\Admin\AdminUpdatePasswordDTO.cs" />
-    <Compile Include="Entities\Admin\AdminUpdateUserInfoDTO.cs" />
-    <Compile Include="Entities\Client\CientInfoDTO.cs" />
-    <Compile Include="Entities\Client\ClientConnectionDTO.cs" />
-    <Compile Include="Entities\Connection\ConnectionInfoDTO.cs" />
     <Compile Include="Entities\File\FileInfoDTO.cs" />
     <Compile Include="Entities\File\FileResponseDTO.cs" />
     <Compile Include="Entities\File\FileRequestDTO .cs" />

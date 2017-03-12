@@ -115,7 +115,7 @@ namespace p2pWpf
             Parent.Show();
         }
 
-        protected override async void OnContentRendered(EventArgs e)
+        private async  void fileTransferring(string fileName, string ip, int port)
         {
             // Listen           
             listener.Start();
