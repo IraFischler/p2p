@@ -20,7 +20,7 @@ namespace p2pWeb
         };
         protected void Page_Load(object sender, EventArgs e)
         {
-            populateListBox(getUsers());
+            //populateListBox(getUsers());
         }
 
         private List<UserInfoDTO> getUsers()
