@@ -38,6 +38,9 @@ namespace p2pWpf
             OnLoad();
         }
 
+        /// <summary>
+        /// on load check if Myconfix.xml exist and get ditaild from it
+        /// </summary>
         private void OnLoad()
         {
             logoutBtn.Visibility = System.Windows.Visibility.Hidden;
@@ -46,6 +49,7 @@ namespace p2pWpf
             string xmlPath = (dir + @"\MyConfig.xml");
             configContent = File.ReadAllText(xmlPath);
 
+            //if the config is not empty read data and update all the text boxes.
             if (configContent != "")
             {
                 Type _type = typeof(UserLoginDTO);
@@ -54,7 +58,6 @@ namespace p2pWpf
                 {
                     return;
                 }
-
                 userNameTb.Text = uld.UserName;
                 passwordTb.Text = uld.Password;
                 ipTb.Text = uld.Ip;
@@ -64,9 +67,14 @@ namespace p2pWpf
             }
         }
 
+        /// <summary>
+        /// login to the system
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void loginBtn_Click(object sender, RoutedEventArgs e)
-        {
-            
+        {   
+            // check that all fields are valied       
             if (validateForm())
             {
                 XmlDocument xmlDoc = new XmlDocument();
@@ -75,6 +83,7 @@ namespace p2pWpf
                 XmlSerializer wr = new XmlSerializer(typeof(UserLoginDTO));
                 FileStream fs = File.OpenWrite(xmlPath);
 
+                //read from the config all the files
                 var files = Directory.GetFiles(inputFilesDirectoryTb.Text);
 
                 foreach (var fPath in files)
@@ -100,7 +109,7 @@ namespace p2pWpf
                     UploadPath = outputFilesDirectoryTb.Text,
                     Files = userFiles
                 };
-
+                 // serealize the user object to be able transfer data
                 wr.Serialize(fs, user);
                 fs.Close();
 
@@ -109,6 +118,8 @@ namespace p2pWpf
                 using (Service1Client client = new Service1Client())
                 {
                     var result = client.loginUser(p2p.Utils.XmlFormatter.GetXMLFromObject(user));
+
+                    //if the return value is OK open the window to download
                     if (result == "OK")
                     {
                         //hide the login btn and replace by logout btn
@@ -122,6 +133,7 @@ namespace p2pWpf
                             Password = passwordTb.Text,
                             Parent = this
                         };
+                         //hide main window and show the download window
                         this.Hide();
                         dw.Show();
                     }

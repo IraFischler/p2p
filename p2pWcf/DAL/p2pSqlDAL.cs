@@ -285,12 +285,10 @@ namespace p2pWcf.DAL
             return "ERROR";
         }
 
-        //If the user signout update the DB that he isnt available 
-        //public static void signoutUser(UserSignoutDTO usd) { }
-
         #endregion
 
         #region FILE
+
         public static FileSearchResultDTO searchFiles(FileSearchDTO fsd)
         {
             try
@@ -477,13 +475,7 @@ namespace p2pWcf.DAL
 
         }
 
-
-
-
     }
-
-
-
 
 }
 

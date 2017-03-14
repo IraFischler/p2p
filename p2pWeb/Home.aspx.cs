@@ -1,4 +1,5 @@
-﻿using p2pWeb.p2pService;
+﻿using p2p.Entities.File;
+using p2pWeb.p2pService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +13,11 @@ namespace p2pWeb
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //getFiles();
-            //getStatistics();
+            populateListBox(getFiles());
+            getStatistics();
         }
 
-
-        private void getFiles()
+        private List<FileInfoDTO> getFiles()
         {
             using (Service1Client client = new Service1Client())
             {
@@ -27,17 +27,62 @@ namespace p2pWeb
                 {
                     foreach (var item in result.Files)
                     {
-                        filesLb.Items.Add(item.ToString());
+                        return result.Files.ToList();
                     }
                 }
+                else
+                {
+                    validationLb.Text = "No Files Found";
+                }
+            }
+            return new List<FileInfoDTO>();
+        }
+
+        private void populateListBox(List<FileInfoDTO> files)
+        {
+            foreach (var item in files)
+            {
+                filesLb.Items.Add(item.ToString());
+            }
+        }
+
+        private object getSelectedFile()
+        {
+            if (filesLb.SelectedValue == null)
+            {
+                return null;
+            }
+            else
+            {
+                var res = getFiles().Find(u => { return u.ToString() == filesLb.SelectedValue; });
+                return res;
             }
         }
 
         public void searchBtn_Click(object sender, EventArgs e)
         {
-            //??????????????????what shoul i do with this button?????
-        }
+            FileInfoDTO f = new FileInfoDTO()
+            {
+                FileName = searchBtn.Text,
+            };
+            using (Service1Client client = new Service1Client())
+            {
+                var result = client.searchFiles(p2p.Utils.XmlFormatter.GetXMLFromObject(f));
 
+                if (result.SearchResult == "OK" && result.Files.Count() > 0)
+                {
+                    filesLb.Items.Clear();
+                    foreach (var item in result.Files)
+                    {
+                        populateListBox(result.Files.ToList());
+                    }
+                }
+                else
+                {
+                    validationLb.Text = "No Files Found";
+                }
+            }
+        }
         public void getStatistics()
         {
             using (Service1Client client = new Service1Client())
@@ -50,6 +95,5 @@ namespace p2pWeb
             }
 
         }
-        
     }
 }

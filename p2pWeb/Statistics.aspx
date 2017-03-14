@@ -20,6 +20,8 @@
         <asp:Button ID="searchBtn" runat="server" Text="Search" OnClick="searchBtn_Click"/>
         <asp:ListBox ID="filesLb" runat="server" OnSelectedIndexChanged="usersLb_SelectedIndexChanged"></asp:ListBox><br />
     </div>
+        <br />
+            <asp:Label ID="validationLb" runat="server"> </asp:Label>
     </form>
 </body>
 </html>

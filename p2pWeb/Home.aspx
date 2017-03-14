@@ -99,7 +99,10 @@
                 <asp:TextBox ID="searchTb" runat="server"></asp:TextBox>
                 <asp:Button ID="searchBtn" runat="server" Text="Search" OnClick="searchBtn_Click" />
             </div>
+
         </div>
+        <br />
+            <asp:Label ID="validationLb" runat="server"> </asp:Label>
     </form>
 </body>
 </html>

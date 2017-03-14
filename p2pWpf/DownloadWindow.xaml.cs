@@ -19,6 +19,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using System.Xml.Serialization;
 
 namespace p2pWpf
@@ -33,16 +34,23 @@ namespace p2pWpf
         public MainWindow Parent { get; set; }
         TCPHandler tcpH;
         int PORT = 8005;
-      
-
+        
         public DownloadWindow()
-        {
+        {          
             InitializeComponent();
+            downloadingLb.IsVisible.Equals(false);
+            fileNameLb1.IsVisible.Equals(false);
             tcpH = new TCPHandler(PORT);
         }
 
+        /// <summary>
+        /// download the requested file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void downloadBtn_Click(object sender, RoutedEventArgs e)
-        {
+        {       
+            //if user didnt selected file - notify     
             if (resultsListBox.SelectedItem == null)
             {
                 MessageBox.Show("Please select file");
@@ -54,19 +62,28 @@ namespace p2pWpf
             {
                 FileName = fr.FileName,
                 FileType = fr.FileType,
-                //FileSize = fr.FileSize,
                 UserName = UserName,
                 Password = Password,
-                //Id = f.Id
             };
 
+            //call server with the requested file and sent the request over TCP
             using (Service1Client client = new Service1Client())
             {
                 var res = client.downloadRequest(request);
                 tcpH.sendRequest(res.Ip, res.Port, request.FileName+request.FileType);
             }
+            TCPHandler tcph = new TCPHandler();
+            timeLb.Content = tcph.total.Duration().ToString();
+            downloadingLb.IsVisible.Equals(false);
+            fileNameLb1.IsVisible.Equals(false);
+            myFileNameLb.Content = fileNameTb.ToString();
         }
 
+        /// <summary>
+        /// search file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void searchBtn_Click(object sender, RoutedEventArgs e)
         {
             FileSearchDTO file = new FileSearchDTO()
@@ -76,12 +93,14 @@ namespace p2pWpf
                 SearchText = fileNameTb.Text
             };
 
+            //call the server and use linq to search file
             using (Service1Client client = new Service1Client())
             {
                 var result = client.searchFiles(p2p.Utils.XmlFormatter.GetXMLFromObject(file));
 
                 if (result.SearchResult == "OK" && result.Files.Count() > 0)
                 {
+                    //clear the llist box and append all the found files
                     resultsListBox.Items.Clear();
                     foreach (var item in result.Files)
                     {
@@ -95,6 +114,7 @@ namespace p2pWpf
             }
         }
 
+        //when closing the window stop the listener and show the main window
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             try
@@ -106,7 +126,6 @@ namespace p2pWpf
             }
 
             Parent.Show();
-        }
-
+        }       
     }
 }

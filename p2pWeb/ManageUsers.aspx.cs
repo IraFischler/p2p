@@ -12,15 +12,12 @@ namespace p2pWeb
     public partial class ManageUsers : System.Web.UI.Page
     {
 
-        UserInfoDTO u = new UserInfoDTO()
-        {
-            UserName = "orin",
-            Password = "111",
-            Email = "orin@gmail.com"
-        };
         protected void Page_Load(object sender, EventArgs e)
         {
-            //populateListBox(getUsers());
+            if (!Page.IsPostBack)
+            {
+                populateListBox(getUsers());
+            }
         }
 
         private List<UserInfoDTO> getUsers()
@@ -49,10 +46,8 @@ namespace p2pWeb
             }
         }
 
-
         private bool validateUser(UserInfoDTO u)
         {
-
             if (userNameTb.Text == "" || passwordTb.Text == "" || emailTb.Text == "")
             {
                 validationLb.Text = "Fill  all fields";
@@ -136,7 +131,7 @@ namespace p2pWeb
             }
 
             usersLb.Items.Clear();
-            getUsers();
+            populateListBox(getUsers());
         }
 
         protected void deleteBtn_Click(object sender, EventArgs e)
@@ -150,7 +145,7 @@ namespace p2pWeb
                 {
                     validationLb.Text = "User has been succesfully removed ";
                     usersLb.Items.Clear();
-                    getUsers();
+                    populateListBox(getUsers());
                 }
                 else
                 {
@@ -176,13 +171,16 @@ namespace p2pWeb
             {
                 using (Service1Client client = new Service1Client())
                 {
+                    user.Password = passwordTb.Text;
+                    user.UserName = userNameTb.Text;
+                    user.Email = emailTb.Text;
                     var result = client.updateUser(user);
 
                     if (result == "OK")
                     {
                         validationLb.Text = "User has been succesfully updated ";
                         usersLb.Items.Clear();
-                        getUsers();
+                        populateListBox(getUsers());
                     }
 
                 }
