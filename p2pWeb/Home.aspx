@@ -98,11 +98,12 @@
                 <asp:ListBox ID="filesLb" runat="server" Width="700" Height="350"></asp:ListBox><br />
                 <asp:TextBox ID="searchTb" runat="server"></asp:TextBox>
                 <asp:Button ID="searchBtn" runat="server" Text="Search" OnClick="searchBtn_Click" />
+                <br />
+                <asp:Label ID="validationLb" runat="server"> </asp:Label>
             </div>
-
+         
         </div>
-        <br />
-            <asp:Label ID="validationLb" runat="server"> </asp:Label>
+       
     </form>
 </body>
 </html>

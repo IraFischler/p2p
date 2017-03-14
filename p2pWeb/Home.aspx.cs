@@ -61,28 +61,18 @@ namespace p2pWeb
 
         public void searchBtn_Click(object sender, EventArgs e)
         {
-            FileInfoDTO f = new FileInfoDTO()
+            var result = getFiles().Where(f => f.FileName == searchTb.Text);
+            if (result.Count() > 0)
             {
-                FileName = searchBtn.Text,
-            };
-            using (Service1Client client = new Service1Client())
+                filesLb.Items.Clear();
+                populateListBox(result.ToList());
+            }
+            else
             {
-                var result = client.searchFiles(p2p.Utils.XmlFormatter.GetXMLFromObject(f));
-
-                if (result.SearchResult == "OK" && result.Files.Count() > 0)
-                {
-                    filesLb.Items.Clear();
-                    foreach (var item in result.Files)
-                    {
-                        populateListBox(result.Files.ToList());
-                    }
-                }
-                else
-                {
-                    validationLb.Text = "No Files Found";
-                }
+                validationLb.Text = "No Files Found";
             }
         }
+
         public void getStatistics()
         {
             using (Service1Client client = new Service1Client())
